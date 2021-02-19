@@ -12,10 +12,10 @@ acdh\_arche\_pyutils.acdh\_arche\_pyutils module
    :undoc-members:
    :show-inheritance:
 
-acdh\_arche\_pyutils.cli module
--------------------------------
+acdh\_arche\_pyutils.client module
+----------------------------------
 
-.. automodule:: acdh_arche_pyutils.cli
+.. automodule:: acdh_arche_pyutils.client
    :members:
    :undoc-members:
    :show-inheritance:

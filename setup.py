@@ -51,9 +51,7 @@ setup(
     ],
     description="a python client for ARCHE-API",
     entry_points={
-        'console_scripts': [
-            'acdh-arche-pyutils=acdh_arche_pyutils.cli:main',
-        ],
+        'console_scripts': [],
     },
     install_requires=requirements,
     license="MIT",

@@ -1,51 +1,25 @@
 #!/usr/bin/env python
 
-"""Tests for `acdh-arche-pyutils` package."""
-import os
+"""Tests for `acdh_arche_pyutils.client` module."""
 
-import pytest
-
-from click.testing import CliRunner
-
-# from acdh_arche_pyutils import acdh_arche_pyutils
-from acdh_arche_pyutils import cli
+import unittest
+from acdh_arche_pyutils.client import ArcheApiClient
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
+class Test_pyutils_client(unittest.TestCase):
+    """Tests for `acdh_arche_pyutils.utils` module.""" 
 
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    import requests
-    return requests.get('https://github.com/torvalds/linux')
+    def setUp(self):
+        """Set up test fixtures, if any."""
+        self.endpoint = "https://arche-curation.acdh-dev.oeaw.ac.at/api/"
+        self.arche_client = ArcheApiClient(self.endpoint)
 
+    def tearDown(self):
+        """Tear down test fixtures, if any."""
 
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+    def test_001_parse_url(self):
+        self.assertEqual(self.arche_client.endpoint, self.endpoint)
 
-
-class UnixFS:
-
-    @staticmethod
-    def rm(filename):
-        os.remove(filename)
-
-
-def test_unix_fs(mocker):
-    mocker.patch('os.remove')
-    UnixFS.rm('file')
-    os.remove.assert_called_once_with('file')
-
-
-def test_command_line_interface():
-    """Test the CLI."""
-    runner = CliRunner()
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 0
-    assert 'acdh-arche-pyutils.cli.main' in result.output
-    help_result = runner.invoke(cli.main, ['--help'])
-    assert help_result.exit_code == 0
-    assert '--help  Show this message and exit.' in help_result.output
+    def test_002_get_description(self):
+        description = self.arche_client.description
+        self.assertEqual(type(description), dict)
