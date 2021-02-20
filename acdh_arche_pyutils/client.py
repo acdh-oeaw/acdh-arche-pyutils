@@ -1,19 +1,11 @@
+import rdflib
 import requests
 import yaml
 
-
-def camel_to_snake(s):
-    """ converts CamelCase string to camel_case\
-        taken from https://stackoverflow.com/a/44969381
-
-        :param s: some string
-        :type s: str:
-
-        :return: a camel_case string
-        :rtype: str:
-    """
-    no_camel = ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
-    return no_camel.replace('__', '_')
+from acdh_arche_pyutils.utils import (
+    camel_to_snake,
+    create_query_sting
+)
 
 
 class ArcheApiClient():
@@ -35,3 +27,32 @@ class ArcheApiClient():
         self.describe_url = f"{arche_endpoint}describe"
         self.info = requests.get(self.describe_url)
         self.description = yaml.load(self.info.text, Loader=yaml.FullLoader)
+        self.rest = self.description['rest']
+        self.schema = self.description['schema']
+        self.base_url = self.rest['urlBase']
+        self.path_base = self.rest['pathBase']
+        self.fetched_endpoint = f"{self.base_url}{self.path_base}"
+        for key, value in self.schema.items():
+            if isinstance(value, str):
+                setattr(self, camel_to_snake(key), value)
+        for key, value in self.schema['classes'].items():
+            if isinstance(value, str):
+                setattr(self, camel_to_snake(key), value)
+
+    def top_col_ids(self):
+        """returns of list of tuples (hasIdentifier, hasTitle) of all TopCollection"""
+        query_params = {
+            "property[0]": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "value[0]": self.top_collection,
+            "readMode": 'ids'
+        }
+        query_string = create_query_sting(query_params)
+        r = requests.get(f"{self.fetched_endpoint}search?{query_string}")
+        g = rdflib.Graph().parse(data=r.text, format='ttl')
+        items = [
+            (
+                str(x[0]),
+                str(x[1])
+            ) for x in g.subject_objects(predicate=rdflib.URIRef(self.label))
+        ]
+        return items
