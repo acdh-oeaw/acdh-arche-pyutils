@@ -2,6 +2,20 @@ import requests
 import yaml
 
 
+def camel_to_snake(s):
+    """ converts CamelCase string to camel_case\
+        taken from https://stackoverflow.com/a/44969381
+
+        :param s: some string
+        :type s: str:
+
+        :return: a camel_case string
+        :rtype: str:
+    """
+    no_camel = ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
+    return no_camel.replace('__', '_')
+
+
 class ArcheApiClient():
     """Main Class to interact with ARCHE-API """
 

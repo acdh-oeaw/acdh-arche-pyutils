@@ -3,7 +3,7 @@
 """Tests for `acdh_arche_pyutils.client` module."""
 
 import unittest
-from acdh_arche_pyutils.client import ArcheApiClient
+from acdh_arche_pyutils.client import ArcheApiClient, camel_to_snake
 
 
 class Test_pyutils_client(unittest.TestCase):
@@ -23,3 +23,13 @@ class Test_pyutils_client(unittest.TestCase):
     def test_002_get_description(self):
         description = self.arche_client.description
         self.assertEqual(type(description), dict)
+    
+    def test_003_convert_camel_case(self):
+        strings = [
+            'CamelCase',
+            'camel_Case',
+            'camel_case',
+        ]
+        should_be = 'camel_case'
+        for x in strings:
+            self.assertEqual(camel_to_snake(x), should_be)
