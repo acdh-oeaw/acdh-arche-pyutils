@@ -29,3 +29,20 @@ def create_query_sting(param_dict):
         ]
     )
     return params.replace('#', '%23')
+
+
+def id_from_uri(uri):
+    """ extracts the id from an ARCHE-URL like https://whatever.com/123 -> 123
+    :param uri: some ARCHE-URL
+    :type uri: str
+
+    :return: the actual ID, e.g. 123
+    :rtype: str:
+    """
+    if uri.endswith('/'):
+        uri = uri[:-1]
+    a_id = uri.split('/')[-1]
+    try:
+        return f"{int(a_id)}"
+    except ValueError:
+        return ""
