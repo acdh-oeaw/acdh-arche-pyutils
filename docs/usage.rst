@@ -2,6 +2,18 @@
 Usage
 =====
 
+Write RDF-Graph of an ARCHE-URI to file::
+
+    from acdh_arche_pyutils.client import ArcheApiClient
+
+    endpoint = "https://arche-dev.acdh-dev.oeaw.ac.at/api/"
+    client = ArcheApiClient(endpoint)
+    top_cols = client.write_resource_to_file("https://arche-dev.acdh-dev.oeaw.ac.at/api/123")
+    print(top_cols)
+    
+    # returns the name of the saved file, e.g. `123.ttl`
+
+
 Fetch all TopCollection URIs and Labels::
 
     from acdh_arche_pyutils.client import ArcheApiClient
