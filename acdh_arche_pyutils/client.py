@@ -2,6 +2,7 @@ import rdflib
 import requests
 import yaml
 import os
+from collections import defaultdict
 from acdh_arche_pyutils.utils import (
     camel_to_snake,
     create_query_sting,
@@ -48,6 +49,7 @@ class ArcheApiClient():
 
     def top_col_ids(self):
         """returns of list of tuples (hasIdentifier, hasTitle) of all TopCollection"""
+        items = defaultdict(list)
         query_params = {
             "property[0]": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
             "value[0]": self.top_collection,
@@ -56,13 +58,12 @@ class ArcheApiClient():
         query_string = create_query_sting(query_params)
         r = requests.get(f"{self.fetched_endpoint}search?{query_string}")
         g = rdflib.Graph().parse(data=r.text, format='ttl')
-        items = [
-            (
-                str(x[0]),
-                str(x[1])
-            ) for x in g.subject_objects(predicate=rdflib.URIRef(self.label))
-        ]
-        return items
+        for x in g.subject_objects(predicate=rdflib.URIRef(self.label)):
+            items[x[0]].append(x[1])
+        list_items = []
+        for key, value in items.items():
+            list_items.append((f"{key}", value))
+        return list_items
 
     def get_resource(self, res_uri):
         """ fetches the given resource and its ancestors/parents

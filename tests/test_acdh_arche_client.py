@@ -34,7 +34,7 @@ class Test_pyutils_client(unittest.TestCase):
         self.assertEqual(a_cl.endpoint, a_cl.fetched_endpoint)
 
     def test_005_top_cols(self):
-        self.assertEqual(type(self.top_col), list)
+        self.assertTrue(isinstance(self.top_col, list))
         self.assertEqual(len(self.top_col[0]), 2)
 
     def test_006_get_resource(self):
@@ -44,9 +44,10 @@ class Test_pyutils_client(unittest.TestCase):
 
     def test_007_write_resource_to_file(self):
         some_uri = self.top_col[0][0]
+        print(some_uri)
         res = self.arche_client.write_resource_to_file(some_uri)
         self.assertTrue(os.path.isfile(res))
         res_xml = self.arche_client.write_resource_to_file(some_uri, format='xml')
         self.assertTrue(res_xml.endswith('.xml'))
-        os.remove(res)
-        os.remove(res_xml)
+        # os.remove(res)
+        # os.remove(res_xml)
