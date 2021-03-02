@@ -2,6 +2,7 @@ import rdflib
 import requests
 import yaml
 import os
+from tqdm import tqdm
 from collections import defaultdict
 from acdh_arche_pyutils.utils import (
     camel_to_snake,
@@ -124,7 +125,7 @@ class ArcheToTripleStore(ArcheApiClient):
     ):
         super().__init__(**kwargs)
         self.triple_store = triple_store
-        self.user = user,
+        self.user = user
         self.pw = pw
         self.headers = headers
 
@@ -148,3 +149,17 @@ class ArcheToTripleStore(ArcheApiClient):
         except requests.ConnectionError as e:
             return [500, f"{e}"]
         return [r.status_code, r.text]
+
+    def post_all_resources(self):
+        """ posts all TopCols to Triple Store
+
+        :return: A list of status codes and response texts and top-col-id
+        :rtype: list
+
+        """
+        top_ids = [x[0] for x in self.top_col_ids()]
+        for x in tqdm(top_ids, total=len(top_ids)):
+            response = self.post_resource(x)
+            print(f"posting data for URI: {x};\
+                \n import response: \n {response}")
+        return "done"
