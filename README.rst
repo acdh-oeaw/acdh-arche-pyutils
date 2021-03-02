@@ -19,9 +19,9 @@ acdh-arche-pyutils
         :target: https://acdh-arche-pyutils.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot
-        :target: https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot
-        :alt: Dependabot Enabled
+.. image:: https://codecov.io/gh/acdh-oeaw/acdh-arche-pyutils/branch/master/graph/badge.svg?token=4EHHOM834P
+      :target: https://codecov.io/gh/acdh-oeaw/acdh-arche-pyutils
+    
 
 
 a python client for ARCHE-API
