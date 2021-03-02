@@ -2,12 +2,12 @@
 acdh-arche-pyutils
 ==================
 
-.. image:: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Build%20acdh-arche-pyutils%20Package/badge.svg
-        :target: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Build%20acdh-arche-pyutils%20Package/badge.svg
+.. image:: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Build/badge.svg
+        :target: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Build/badge.svg
         :alt: Github Workflow Build acdh-arche-pyutils Status
 
-.. image:: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Run%20acdh-arche-pyutils%20Tox%20Test%20Suite/badge.svg
-        :target: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Run%20acdh-arche-pyutils%20Tox%20Test%20Suite/badge.svg
+.. image:: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Test/badge.svg
+        :target: https://github.com/acdh-oeaw/acdh-arche-pyutils/workflows/Test/badge.svg
         :alt: Github Workflow Tests Status
 
 .. image:: https://img.shields.io/pypi/v/acdh-arche-pyutils.svg
