@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+# #!/usr/bin/env python
 
-"""Tests for `acdh_arche_pyutils.client` module."""
+# """Tests for `acdh_arche_pyutils.client` module."""
 import os
 import unittest
 from acdh_arche_pyutils.client import ArcheApiClient
@@ -49,5 +49,5 @@ class Test_pyutils_client(unittest.TestCase):
         self.assertTrue(os.path.isfile(res))
         res_xml = self.arche_client.write_resource_to_file(some_uri, format='xml')
         self.assertTrue(res_xml.endswith('.xml'))
-        # os.remove(res)
-        # os.remove(res_xml)
+        os.remove(res)
+        os.remove(res_xml)

@@ -17,6 +17,7 @@ def camel_to_snake(s):
 
 def create_query_sting(param_dict):
     """ turns a dict into a query string
+
     :param param_dict: a dictionary
     :type param_dict: dict
 
@@ -33,6 +34,7 @@ def create_query_sting(param_dict):
 
 def id_from_uri(uri):
     """ extracts the id from an ARCHE-URL like https://whatever.com/123 -> 123
+
     :param uri: some ARCHE-URL
     :type uri: str
 

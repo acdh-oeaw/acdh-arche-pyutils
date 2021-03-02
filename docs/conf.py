@@ -155,7 +155,3 @@ texinfo_documents = [
      'One line description of project.',
      'Miscellaneous'),
 ]
-
-html_css_files = [
-    'custom_cookietemple.css',
-]

@@ -67,6 +67,7 @@ class ArcheApiClient():
 
     def get_resource(self, res_uri):
         """ fetches the given resource and its ancestors/parents
+
         :param res_uri: an ARCHE URI
         :type res_uri: str
 
@@ -87,6 +88,7 @@ class ArcheApiClient():
     def write_resource_to_file(self, res_uri, format='ttl'):
         """
         writes a resource (and its parents/children) to file on disk
+
         :param res_uri: An ARCHE-URI
         :type res_uri: str
         :param format: The serialisation format, defaults to 'ttl' -> turtle\
@@ -106,3 +108,43 @@ class ArcheApiClient():
         g = self.get_resource(res_uri)
         g.serialize(save_path, format=format, encoding='utf8')
         return save_path
+
+
+class ArcheToTripleStore(ArcheApiClient):
+    """ A class to post ARCHE data to a Triplestore """
+    def __init__(
+        self,
+        triple_store,
+        user=None,
+        pw=None,
+        headers={
+            'Content-Type': 'text/turtle;charset=utf-8'
+        },
+        **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.triple_store = triple_store
+        self.user = user,
+        self.pw = pw
+        self.headers = headers
+
+    def post_resource(self, res_id):
+        """ posts the given resource to the triple store
+
+        :param res_uri: An ARCHE-URI
+        :type res_uri: str
+
+        :return: The HTTP status code of the response and its body
+        :rtype: list
+        """
+        res = self.get_resource(res_id)
+        try:
+            r = requests.post(
+                self.triple_store,
+                headers=self.headers,
+                auth=(self.user, self.pw),
+                data=res.serialize(format='ttl')
+            )
+        except requests.ConnectionError as e:
+            return [500, f"{e}"]
+        return [r.status_code, r.text]
