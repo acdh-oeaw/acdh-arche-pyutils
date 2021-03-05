@@ -2,8 +2,9 @@ import rdflib
 import requests
 import yaml
 import os
-from tqdm import tqdm
 from collections import defaultdict
+from SPARQLWrapper import SPARQLWrapper, JSON
+from tqdm import tqdm
 from acdh_arche_pyutils.utils import (
     camel_to_snake,
     create_query_sting,
@@ -128,6 +129,26 @@ class ArcheToTripleStore(ArcheApiClient):
         self.user = user
         self.pw = pw
         self.headers = headers
+        self.queries = {
+            'count_triples': """SELECT (count(*) as ?cnt) WHERE {?s ?p ?o.}"""
+        }
+
+    def count_triples(self):
+        """ counts all existing triples in the triple store
+
+        :return: The triple count
+        :rtype: int
+        """
+        sparql_query = self.queries['count_triples']
+        sparql_serv = SPARQLWrapper(self.triple_store)
+        sparql_serv.setReturnFormat(JSON)
+        sparql_serv.setQuery(sparql_query)
+        result = sparql_serv.query().convert()
+        triple_count = result['results']['bindings'][0]['cnt']['value']
+        try:
+            return int(triple_count)
+        except ValueError:
+            return triple_count
 
     def post_resource(self, res_id):
         """ posts the given resource to the triple store

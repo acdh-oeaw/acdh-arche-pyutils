@@ -28,7 +28,10 @@ class Test_pyutils_importer(unittest.TestCase):
 
     def test_002_get_res_id(self):
         self.assertIsInstance(self.res_id, str)
-    
+
     def test_003_post(self):
         response = self.client.post_resource(self.res_id)
         self.assertIsInstance(response, list)
+
+    # def test_0004_triplescount(self):
+    #     self.assertIsInstance(self.client.count_triples(), int)
