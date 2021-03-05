@@ -3,7 +3,7 @@ import requests
 import yaml
 import os
 from collections import defaultdict
-from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLWrapper import SPARQLWrapper, JSON, BASIC, POST
 from tqdm import tqdm
 from acdh_arche_pyutils.utils import (
     camel_to_snake,
@@ -130,7 +130,8 @@ class ArcheToTripleStore(ArcheApiClient):
         self.pw = pw
         self.headers = headers
         self.queries = {
-            'count_triples': """SELECT (count(*) as ?cnt) WHERE {?s ?p ?o.}"""
+            'count_triples': "SELECT (count(*) as ?cnt) WHERE {?s ?p ?o.}",
+            'delete_all': "DELETE { ?s ?p ?o } WHERE { ?s ?p ?o }"
         }
 
     def count_triples(self):
@@ -149,6 +150,18 @@ class ArcheToTripleStore(ArcheApiClient):
             return int(triple_count)
         except ValueError:
             return triple_count
+
+    def delete_triples(self):
+        """ deletes everything """
+        sparql_query = self.queries['delete_all']
+        sparql_serv = SPARQLWrapper(self.triple_store)
+        sparql_serv.setHTTPAuth(BASIC)
+        sparql_serv.setMethod(POST)
+        sparql_serv.setCredentials(self.user, self.pw)
+        sparql_serv.setReturnFormat(JSON)
+        sparql_serv.setQuery(sparql_query)
+        result = sparql_serv.query().convert()
+        return result
 
     def post_resource(self, res_id):
         """ posts the given resource to the triple store
