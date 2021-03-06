@@ -2,6 +2,7 @@ import rdflib
 import requests
 import yaml
 import os
+import timeit
 from collections import defaultdict
 from SPARQLWrapper import SPARQLWrapper, JSON, BASIC, POST
 from tqdm import tqdm
@@ -48,6 +49,11 @@ class ArcheApiClient():
         for key, value in self.schema['classes'].items():
             if isinstance(value, str):
                 setattr(self, camel_to_snake(key), value)
+        self.serialization_map = {
+            'nt': 'application/n-triples',
+            'ttl': 'text/turtle',
+            'xml': 'application/rdf%2Bxml'
+        }
 
     def top_col_ids(self):
         """returns of list of tuples (hasIdentifier, hasTitle) of all TopCollection"""
@@ -67,7 +73,7 @@ class ArcheApiClient():
             list_items.append((f"{key}", value))
         return list_items
 
-    def get_resource(self, res_uri):
+    def get_resource(self, res_uri, format='nt'):
         """ fetches the given resource and its ancestors/parents
 
         :param res_uri: an ARCHE URI
@@ -79,15 +85,22 @@ class ArcheApiClient():
         query_params = {
             "readMode": "relatives",
             "parents[0]": self.parent,
+            "format": self.serialization_map[format]
         }
         query_string = create_query_sting(query_params)
         url = f"{res_uri}/metadata?{query_string}"
         print(f"fetching data for URI: {res_uri}, calling endpoint \n {url}")
+        start = timeit.default_timer()
         r = requests.get(url)
-        g = rdflib.Graph().parse(data=r.text, format='ttl')
+        stop = timeit.default_timer()
+        print(f"fetching done in {stop - start}")
+        start = timeit.default_timer()
+        g = rdflib.Graph().parse(data=r.text, format=format)
+        stop = timeit.default_timer()
+        print(f"parsing done in {stop - start}")
         return g
 
-    def write_resource_to_file(self, res_uri, format='ttl'):
+    def write_resource_to_file(self, res_uri, format='nt'):
         """
         writes a resource (and its parents/children) to file on disk
 
