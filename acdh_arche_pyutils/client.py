@@ -84,7 +84,7 @@ class ArcheApiClient():
         """
         query_params = {
             "readMode": "relatives",
-            "parents[0]": self.parent,
+            "parentProperty": self.parent,
             "format": self.serialization_map[format]
         }
         query_string = create_query_sting(query_params)
