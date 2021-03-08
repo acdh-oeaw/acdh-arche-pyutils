@@ -89,15 +89,11 @@ class ArcheApiClient():
         }
         query_string = create_query_sting(query_params)
         url = f"{res_uri}/metadata?{query_string}"
-        print(f"fetching data for URI: {res_uri}, calling endpoint \n {url}")
+        print(f"fetching and parsing data for URI: {res_uri}, calling endpoint \n {url}")
         start = timeit.default_timer()
-        r = requests.get(url)
+        g = rdflib.Graph().parse(location=url, format=format)
         stop = timeit.default_timer()
-        print(f"fetching done in {stop - start}")
-        start = timeit.default_timer()
-        g = rdflib.Graph().parse(data=r.text, format=format)
-        stop = timeit.default_timer()
-        print(f"parsing done in {stop - start}")
+        print(f"fetching and parsing done in {stop - start}")
         return g
 
     def write_resource_to_file(self, res_uri, format='nt'):
