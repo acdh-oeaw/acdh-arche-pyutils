@@ -139,3 +139,5 @@ dmypy.json
 !performance_experiments.ipynb
 *.ttl
 /out/*.xml
+speed_test.py
+tmp.data
