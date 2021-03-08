@@ -2,14 +2,30 @@
 Usage
 =====
 
+
+Post Data to Triple Store::
+
+    import os
+    from acdh_arche_pyutils.client import ArcheToTripleStore
+
+    BGUSER = os.environ.get('BGUSER')
+    BGPW = os.environ.get('BGPW')
+
+    triple_store = "https://arche-sparql.acdh-dev.oeaw.ac.at/sparql"
+    arche_endpoint = "https://arche-dev.acdh-dev.oeaw.ac.at/api/"
+    client = ArcheToTripleStore(
+        triple_store, arche_endpoint=arche_endpoint,
+        user=BGUSER, pw=BGPW 
+    )
+    top_cols = client.post_all_resources()
+
 Write RDF-Graph of an ARCHE-URI to file::
 
     from acdh_arche_pyutils.client import ArcheApiClient
 
     endpoint = "https://arche-dev.acdh-dev.oeaw.ac.at/api/"
     client = ArcheApiClient(endpoint)
-    top_cols = client.write_resource_to_file("https://arche-dev.acdh-dev.oeaw.ac.at/api/123")
-    print(top_cols)
+    to_file = client.write_resource_to_file("https://arche-dev.acdh-dev.oeaw.ac.at/api/123")
     
     # returns the name of the saved file, e.g. `123.ttl`
 
