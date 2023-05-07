@@ -11,12 +11,12 @@ def camel_to_snake(s):
         :return: a camel_case string
         :rtype: str:
     """
-    no_camel = ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
-    return no_camel.replace('__', '_')
+    no_camel = "".join(["_" + c.lower() if c.isupper() else c for c in s]).lstrip("_")
+    return no_camel.replace("__", "_")
 
 
 def create_query_sting(param_dict):
-    """ turns a dict into a query string
+    """turns a dict into a query string
 
     :param param_dict: a dictionary
     :type param_dict: dict
@@ -24,16 +24,12 @@ def create_query_sting(param_dict):
     :return: a clean query string
     :rtype: str
     """
-    params = "&".join(
-        [
-            f"{key}={value}" for key, value in param_dict.items()
-        ]
-    )
-    return params.replace('#', '%23')
+    params = "&".join([f"{key}={value}" for key, value in param_dict.items()])
+    return params.replace("#", "%23")
 
 
 def id_from_uri(uri):
-    """ extracts the id from an ARCHE-URL like https://whatever.com/123 -> 123
+    """extracts the id from an ARCHE-URL like https://whatever.com/123 -> 123
 
     :param uri: some ARCHE-URL
     :type uri: str
@@ -41,9 +37,9 @@ def id_from_uri(uri):
     :return: the actual ID, e.g. 123
     :rtype: str:
     """
-    if uri.endswith('/'):
+    if uri.endswith("/"):
         uri = uri[:-1]
-    a_id = uri.split('/')[-1]
+    a_id = uri.split("/")[-1]
     try:
         return f"{int(a_id)}"
     except ValueError:

@@ -49,6 +49,7 @@ setup(
     install_requires=requirements,
     license="MIT",
     long_description=readme,
+    long_description_content_type="text/markdown"
     include_package_data=True,
     keywords='acdh-arche-pyutils',
     name='acdh-arche-pyutils',
