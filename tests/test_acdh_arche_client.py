@@ -11,7 +11,7 @@ class Test_pyutils_client(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures, if any."""
-        self.endpoint = "https://arche-dev.acdh-dev.oeaw.ac.at/api/"
+        self.endpoint = "https://arche.acdh.oeaw.ac.at/api/"
         self.arche_client = ArcheApiClient(self.endpoint, out_dir='./out')
         self.top_col = self.arche_client.top_col_ids()
 
@@ -49,4 +49,3 @@ class Test_pyutils_client(unittest.TestCase):
         self.assertTrue(os.path.isfile(res))
         # res_xml = self.arche_client.write_resource_to_file(some_uri, format='xml')
         # self.assertTrue(res_xml.endswith('.xml'))
-        os.remove(res)
